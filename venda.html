@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Venda</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>Cadastrar Venda</h1>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="chefe.html">Chefe</a></li>
+                    <li><a href="vendendor.html">Vendedor</a></li>
+                    <li><a href="venda.html" class="active">Cadastrar Venda</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main class="container">
+        <form class="form-venda">
+            <label for="produto">Produto</label>
+            <input type="text" id="produto" name="produto" placeholder="Digite o nome do produto" required>
+
+            <label for="quantidade">Quantidade</label>
+            <input type="number" id="quantidade" name="quantidade" placeholder="Digite a quantidade" required>
+
+            <label for="preco">Preço Unitário</label>
+            <input type="number" id="preco" name="preco" step="0.01" placeholder="Digite o preço unitário" required>
+
+            <label for="vendedor">Vendedor</label>
+            <input type="text" id="vendedor" name="vendedor" placeholder="Digite o nome do vendedor" required>
+
+            <button type="submit" class="action-btn">Cadastrar</button>
+        </form>
+    </main>
+</body>
+</html>

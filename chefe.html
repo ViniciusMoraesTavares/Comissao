@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do Chefe</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>Painel do Chefe</h1>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="chefe.html" class="active">Chefe</a></li>
+                    <li><a href="vendendor.html">Vendedor</a></li>
+                    <li><a href="venda.html">Cadastrar Venda</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main class="container">
+        <section class="lista-vendedores">
+            <h2>Lista de Vendedores</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Email</th>
+                        <th>Vendas Realizadas</th>
+                        <th>Comissões Totais</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>João Silva</td>
+                        <td>joao@email.com</td>
+                        <td>15</td>
+                        <td>R$ 1.500,00</td>
+                        <td><span class="status active">Ativo</span></td>
+                    </tr>
+                    <tr>
+                        <td>Maria Oliveira</td>
+                        <td>maria@email.com</td>
+                        <td>20</td>
+                        <td>R$ 2.000,00</td>
+                        <td><span class="status inactive">Inativo</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+</body>
+</html>

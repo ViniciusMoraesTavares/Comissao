@@ -11,19 +11,23 @@
     <header class="header">
         <div class="container">
             <h1>Painel do Vendedor</h1>
-            <div>
-                <nav>
-                    <ul class="nav-links">
-                        <li><a href="chefe.html">Chefe</a></li>
-                        <li><a href="vendendor.html">Vendedor</a></li>
-                        <li><a href="venda.html" class="active">Cadastrar Venda</a></li>
-                    </ul>
-                </nav>
-            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="chefe.html">Chefe</a></li>
+                    <li><a href="vendendor.html" class="active">Vendedor</a></li>
+                </ul>
+            </nav>
             <button class="logout-btn">Sair</button>
         </div>
     </header>
+
     <main class="container">
+        <!-- Botão de destaque para Cadastrar Venda -->
+        <section class="cadastrar-venda">
+            <a href="venda.html" class="action-btn destaque">+ Cadastrar Nova Venda</a>
+        </section>
+
+        <!-- Informações do Vendedor -->
         <section class="vendedor-info">
             <div class="vendedor-photo">
                 <img src="https://via.placeholder.com/150" alt="Foto do Vendedor">
@@ -35,10 +39,14 @@
                 <p><strong>Comissões Totais:</strong> R$ 1.800,00</p>
             </div>
         </section>
+
+        <!-- Gráfico de Desempenho -->
         <section class="graficos">
             <h2>Desempenho Mensal</h2>
             <canvas id="vendasChart"></canvas>
         </section>
+
+        <!-- Produtos Vendidos -->
         <section class="produtos-vendidos">
             <h2>Produtos Vendidos</h2>
             <table>
@@ -49,7 +57,7 @@
                         <th>Total</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="tabela-produtos">
                     <tr>
                         <td>Produto A</td>
                         <td>10</td>
@@ -63,9 +71,11 @@
                 </tbody>
             </table>
         </section>
-        <button class="action-btn" onclick="window.location.href='venda.html'">Cadastrar Venda</button>
     </main>
+
     <script>
+        // Exemplo de dados para popular o gráfico
+        const vendasMensais = [1500, 2000, 1800, 2200, 2500, 3000];
         const ctx = document.getElementById('vendasChart').getContext('2d');
         new Chart(ctx, {
             type: 'bar',
@@ -73,7 +83,7 @@
                 labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho'],
                 datasets: [{
                     label: 'Total de Vendas (R$)',
-                    data: [1500, 2000, 1800, 2200, 2500, 3000],
+                    data: vendasMensais,
                     backgroundColor: '#007bff',
                     borderColor: '#0056b3',
                     borderWidth: 1
@@ -89,5 +99,28 @@
             }
         });
     </script>
+
+    <style>
+        /* Destacar o botão de cadastrar venda */
+        .cadastrar-venda {
+            text-align: center;
+            margin-bottom: 1em;
+        }
+
+        .cadastrar-venda .action-btn.destaque {
+            font-size: 1.2em;
+            background-color: #07ff07;
+            color: #333;
+            padding: 1em 2em;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, background-color 0.3s;
+        }
+
+        .cadastrar-venda .action-btn.destaque:hover {
+            background-color: #07ff07;
+            transform: scale(1.05);
+        }
+    </style>
 </body>
 </html>

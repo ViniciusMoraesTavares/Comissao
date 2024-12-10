@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciamento de Produtos</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>Gerenciamento de Produtos</h1>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="chefe.html">Painel do Chefe</a></li>
+                    <li><a href="crud-produtos.html" class="active">Produtos</a></li>
+                    <li><a href="vendendor.html">Vendedores</a></li>
+                    <li><a href="#" class="logout-btn">Sair</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main class="container">
+        <section class="produto-form">
+            <h2>Cadastrar Novo Produto</h2>
+            <form id="produto-form">
+                <label for="nome">Nome do Produto</label>
+                <input type="text" id="nome" name="nome" placeholder="Digite o nome do produto" required>
+
+                <label for="preco">Preço</label>
+                <input type="number" id="preco" name="preco" step="0.01" placeholder="Digite o preço do produto" required>
+
+                <label for="comissao">Comissão (%)</label>
+                <input type="number" id="comissao" name="comissao" step="0.1" placeholder="Digite a comissão em porcentagem" required>
+
+                <button type="submit" class="action-btn">Cadastrar Produto</button>
+            </form>
+        </section>
+        <section class="lista-produtos">
+            <h2>Lista de Produtos</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Preço</th>
+                        <th>Comissão (%)</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="produtos-list">
+                    <!-- Produtos serão carregados dinamicamente -->
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <!-- JavaScript -->
+    <script>
+        const produtosList = document.getElementById('produtos-list');
+        const produtoForm = document.getElementById('produto-form');
+
+        // Produtos Simulados (mock)
+        let produtos = [
+            { id: 1, nome: "Produto A", preco: 100.0, comissao: 10 },
+            { id: 2, nome: "Produto B", preco: 50.0, comissao: 5 }
+        ];
+
+        // Função para renderizar os produtos
+        function renderProdutos() {
+            produtosList.innerHTML = '';
+            produtos.forEach(produto => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${produto.nome}</td>
+                    <td>R$ ${produto.preco.toFixed(2)}</td>
+                    <td>${produto.comissao}%</td>
+                    <td>
+                        <button class="edit-btn" onclick="editProduto(${produto.id})">Editar</button>
+                        <button class="delete-btn" onclick="deleteProduto(${produto.id})">Excluir</button>
+                    </td>
+                `;
+                produtosList.appendChild(row);
+            });
+        }
+
+        // Adicionar Produto
+        produtoForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const nome = document.getElementById('nome').value;
+            const preco = parseFloat(document.getElementById('preco').value);
+            const comissao = parseFloat(document.getElementById('comissao').value);
+
+            const novoProduto = {
+                id: produtos.length + 1,
+                nome,
+                preco,
+                comissao
+            };
+
+            produtos.push(novoProduto);
+            renderProdutos();
+            produtoForm.reset();
+        });
+
+        // Editar Produto
+        function editProduto(id) {
+            const produto = produtos.find(p => p.id === id);
+            if (!produto) return;
+
+            const novoNome = prompt("Editar Nome do Produto:", produto.nome);
+            const novoPreco = parseFloat(prompt("Editar Preço do Produto:", produto.preco));
+            const novaComissao = parseFloat(prompt("Editar Comissão (%):", produto.comissao));
+
+            if (novoNome && !isNaN(novoPreco) && !isNaN(novaComissao)) {
+                produto.nome = novoNome;
+                produto.preco = novoPreco;
+                produto.comissao = novaComissao;
+                renderProdutos();
+            }
+        }
+
+        // Excluir Produto
+        function deleteProduto(id) {
+            if (confirm("Tem certeza que deseja excluir este produto?")) {
+                produtos = produtos.filter(p => p.id !== id);
+                renderProdutos();
+            }
+        }
+
+        // Inicializar a lista de produtos
+        renderProdutos();
+    </script>
+
+    <!-- Estilo Adicional -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 15px 0;
+        }
+
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .header h1 {
+            margin: 0;
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0;
+            display: flex;
+        }
+
+        .nav-links li {
+            margin-left: 15px;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .nav-links a.active {
+            text-decoration: underline;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th, table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .action-btn, .edit-btn, .delete-btn {
+            padding: 8px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            color: #fff;
+        }
+
+        .edit-btn {
+            background-color: #ffc107;
+        }
+
+        .delete-btn {
+            background-color: #dc3545;
+        }
+
+        .action-btn {
+            background-color: #007bff;
+        }
+    </style>
+</body>
+</html>

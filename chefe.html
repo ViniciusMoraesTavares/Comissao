@@ -3,37 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel do Chefe</title>
+    <title>Painel da Empresa</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <header class="header">
         <div class="container">
-            <h1>Painel do Chefe</h1>
+            <h1>Painel da Empresa</h1>
             <nav>
                 <ul class="nav-links">
-                    <li><a href="chefe.html" class="active">Chefe</a></li>
-                    <li><a href="vendendor.html">Vendedor</a></li>
-                    <li><a href="venda.html">Cadastrar Venda</a></li>
+                    <li><a href="chefe.html" class="active">Empresa</a></li>
+                    <li><a href="representantes.html">Representantes</a></li>
+                    <li><a href="status-vendas.html">Gerenciar Vendas</a></li>
                     <li><a href="crud-produtos.html">Gerenciar Produtos</a></li>
                 </ul>
             </nav>
-            <button class="logout-btn">Sair</button>
+            <button> <a href="index.html" class="logout-btn">Sair</a> </button>
         </div>
     </header>
     <main class="container">
         <!-- Formulário de Cadastro -->
         <section class="cadastrar-vendedor">
-            <h2>Cadastrar Novo Vendedor</h2>
+            <h2>Cadastrar Novo Representante</h2>
             <form class="form-cadastro" id="form-cadastro-vendedor">
                 <div class="form-group">
                     <label for="nome">Nome</label>
-                    <input type="text" id="nome" name="nome" placeholder="Digite o nome do vendedor" required>
+                    <input type="text" id="nome" name="nome" placeholder="Digite o nome do Representante" required>
                 </div>
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" id="email" name="email" placeholder="Digite o email do vendedor" required>
+                    <input type="email" id="email" name="email" placeholder="Digite o email do Representante" required>
                 </div>
                 <button type="submit" class="action-btn">Cadastrar</button>
             </form>
@@ -41,7 +41,7 @@
         
         <!-- Lista de Vendedores -->
         <section class="lista-vendedores">
-            <h2>Lista de Vendedores</h2>
+            <h2>Lista de Representantes</h2>
             <table>
                 <thead>
                     <tr>
@@ -125,7 +125,7 @@
         // Redirecionamento ao clicar no vendedor
         tabelaVendedores.addEventListener('click', (event) => {
             if (event.target.tagName === 'TR' || event.target.closest('tr')) {
-                window.location.href = 'vendendor.html';
+                window.location.href = 'vendedor.html';
             }
         });
     </script>

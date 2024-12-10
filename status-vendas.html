@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status de Vendas</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .status-pendente {
+            color: white;
+            background-color: orange;
+            padding: 5px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .status-aprovada {
+            color: white;
+            background-color: green;
+            padding: 5px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .comprovante {
+            width: 100px;
+            height: auto;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .aprovar-btn {
+            background-color: green;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .aprovar-btn:hover {
+            background-color: darkgreen;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table th, table td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #f4f4f4;
+            color: black;
+        }
+
+        .representante {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>Status de Vendas</h1>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="chefe.html" class="active">Empresa</a></li>
+                    <li><a href="representantes.html">Representantes</a></li>
+                    <li><a href="status-vendas.html">Gerenciar Vendas</a></li>
+                    <li><a href="crud-produtos.html">Gerenciar Produtos</a></li>
+                </ul>
+            </nav>
+            <button> <a href="index.html" class="logout-btn">Sair</a> </button>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="vendas">
+            <h2>Vendas Pendentes</h2>
+        </section>
+    </main>
+
+    <script>
+        const vendasPendentes = [
+            {
+                representante: 'João Silva',
+                produto: 'Produto A',
+                quantidade: 3,
+                total: 150,
+                data: '2024-12-01',
+                comprovante: 'comprovante1.jpg',
+                status: 'Pendente',
+            },
+            {
+                representante: 'Maria Oliveira',
+                produto: 'Produto B',
+                quantidade: 2,
+                total: 200,
+                data: '2024-12-02',
+                comprovante: 'comprovante2.jpg',
+                status: 'Pendente',
+            },
+            {
+                representante: 'João Silva',
+                produto: 'Produto C',
+                quantidade: 1,
+                total: 100,
+                data: '2024-12-03',
+                comprovante: 'comprovante3.jpg',
+                status: 'Pendente',
+            }
+        ];
+
+        const vendasContainer = document.getElementById('vendas');
+
+        function agruparPorRepresentante(vendas) {
+            return vendas.reduce((acc, venda) => {
+                if (!acc[venda.representante]) {
+                    acc[venda.representante] = [];
+                }
+                acc[venda.representante].push(venda);
+                return acc;
+            }, {});
+        }
+
+        function renderizarVendas() {
+            const vendasAgrupadas = agruparPorRepresentante(vendasPendentes);
+
+            for (const representante in vendasAgrupadas) {
+                const section = document.createElement('section');
+                section.classList.add('representante');
+
+                const header = document.createElement('h3');
+                header.textContent = `Representante: ${representante}`;
+                section.appendChild(header);
+
+                const table = document.createElement('table');
+                table.innerHTML = `
+                    <thead>
+                        <tr>
+                            <th>Produto</th>
+                            <th>Quantidade</th>
+                            <th>Total</th>
+                            <th>Data</th>
+                            <th>Comprovante</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${vendasAgrupadas[representante].map((venda, index) => `
+                            <tr>
+                                <td>${venda.produto}</td>
+                                <td>${venda.quantidade}</td>
+                                <td>R$ ${venda.total.toFixed(2)}</td>
+                                <td>${new Date(venda.data).toLocaleDateString('pt-BR')}</td>
+                                <td>
+                                    <img src="${venda.comprovante}" alt="Comprovante" class="comprovante" onclick="visualizarComprovante('${venda.comprovante}')">
+                                </td>
+                                <td><span class="status-pendente">${venda.status}</span></td>
+                                <td>
+                                    <button class="aprovar-btn" onclick="aprovarVenda('${representante}', ${index})">Aprovar</button>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                `;
+
+                section.appendChild(table);
+                vendasContainer.appendChild(section);
+            }
+        }
+
+        function visualizarComprovante(comprovante) {
+            window.open(comprovante, '_blank');
+        }
+
+        function aprovarVenda(representante, index) {
+            if (confirm('Tem certeza que deseja aprovar esta venda?')) {
+                const vendasDoRepresentante = vendasPendentes.filter(v => v.representante === representante);
+                const venda = vendasDoRepresentante[index];
+                venda.status = 'Aprovada';
+
+                // Atualizar a exibição do status
+                const statusSpan = document.querySelectorAll('.representante')[Object.keys(agruparPorRepresentante(vendasPendentes)).indexOf(representante)]
+                .querySelectorAll('tbody tr')[index]
+                .querySelector('.status-pendente');
+                statusSpan.textContent = venda.status;
+                statusSpan.classList.remove('status-pendente');
+                statusSpan.classList.add('status-aprovada');
+
+                alert('Venda aprovada com sucesso!');
+            }
+        }
+
+        renderizarVendas();
+    </script>
+</body>
+</html>

@@ -9,13 +9,14 @@
 <body>
     <header class="header">
         <div class="container">
-            <h1>Gerenciamento de Produtos</h1>
+            <h1>Painel Produtos</h1>
             <nav>
                 <ul class="nav-links">
-                    <li><a href="chefe.html">Painel do Chefe</a></li>
-                    <li><a href="crud-produtos.html" class="active">Produtos</a></li>
-                    <li><a href="vendedor.html">Vendedores</a></li>
-                    <li><a href="#" class="logout-btn">Sair</a></li>
+                    <li><a href="chefe.html" class="active">Home</a></li>
+                    <li><a href="representantes.html">Representantes</a></li>
+                    <li><a href="status-vendas.html">Gerenciar Vendas</a></li>
+                    <li><a href="crud-produtos.html">Gerenciar Produtos</a></li>
+                    <li><a href="index.html" class="logout-btn">Sair</a></li>
                 </ul>
             </nav>
         </div>
@@ -33,6 +34,9 @@
                 <label for="comissao">Comissão (%)</label>
                 <input type="number" id="comissao" name="comissao" step="0.1" placeholder="Digite a comissão em porcentagem" required>
 
+                <label for="foto">Foto do Produto</label>
+                <input type="file" id="foto" name="foto" accept="image/*" required>
+
                 <button type="submit" class="action-btn">Cadastrar Produto</button>
             </form>
         </section>
@@ -44,25 +48,24 @@
                         <th>Nome</th>
                         <th>Preço</th>
                         <th>Comissão (%)</th>
+                        <th>Foto</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody id="produtos-list">
-                    <!-- Produtos serão carregados dinamicamente -->
+                    <!-- Produtos carregados dinamicamente -->
                 </tbody>
             </table>
         </section>
     </main>
-
-    <!-- JavaScript -->
     <script>
         const produtosList = document.getElementById('produtos-list');
         const produtoForm = document.getElementById('produto-form');
 
-        // Produtos Simulados (mock)
+        // Produtos exexmplos
         let produtos = [
-            { id: 1, nome: "Produto A", preco: 100.0, comissao: 10 },
-            { id: 2, nome: "Produto B", preco: 50.0, comissao: 5 }
+            { id: 1, nome: "Produto A", preco: 100.0, comissao: 10, foto: "foto1.jpg" },
+            { id: 2, nome: "Produto B", preco: 50.0, comissao: 5, foto: "foto2.jpg" }
         ];
 
         // Função para renderizar os produtos
@@ -74,6 +77,7 @@
                     <td>${produto.nome}</td>
                     <td>R$ ${produto.preco.toFixed(2)}</td>
                     <td>${produto.comissao}%</td>
+                    <td><img src="${produto.foto}" alt="Foto do Produto" style="width: 100px; height: auto;"></td>
                     <td>
                         <button class="edit-btn" onclick="editProduto(${produto.id})">Editar</button>
                         <button class="delete-btn" onclick="deleteProduto(${produto.id})">Excluir</button>
@@ -89,12 +93,14 @@
             const nome = document.getElementById('nome').value;
             const preco = parseFloat(document.getElementById('preco').value);
             const comissao = parseFloat(document.getElementById('comissao').value);
+            const foto = document.getElementById('foto').files[0].name;
 
             const novoProduto = {
                 id: produtos.length + 1,
                 nome,
                 preco,
-                comissao
+                comissao,
+                foto
             };
 
             produtos.push(novoProduto);
@@ -219,6 +225,49 @@
 
         .action-btn {
             background-color: #007bff;
+        }
+
+        .produto-form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .produto-form h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .produto-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .produto-form input[type="text"], 
+        .produto-form input[type="number"], 
+        .produto-form input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .produto-form button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .produto-form button:hover {
+            background-color: #0056b3;
         }
     </style>
 </body>

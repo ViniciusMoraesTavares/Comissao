@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histórico de Vendas</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>Histórico de Vendas</h1>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="vendedor.html">Painel do Representante</a></li>
+                    <li><a href="venda.html">Cadastrar Venda</a></li>
+                    <li><a href="historico-vendas.html">Histórico de vendas</a></li>
+                    <li><a href="index.html" class="logout-btn">Sair</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main class="container">
+        <section class="historico-vendas">
+            <h2>Vendas por Mês</h2>
+            <select id="mes" name="mes">
+                <option value="2024-12">Dezembro 2024</option>
+                <option value="2024-11">Novembro 2024</option>
+            </select>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID da Venda</th>
+                        <th>Data</th>
+                        <th>Total</th>
+                        <th>Comissão</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="vendas-mes"></tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2"><strong>Total do Mês:</strong></td>
+                        <td colspan="2" id="total-mes">R$ 0.00</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><strong>Total Comissão:</strong></td>
+                        <td colspan="2" id="total-comissao">R$ 0.00</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </section>
+        <div id="modal-detalhes" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2>Detalhes da Venda</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Produto</th>
+                            <th>Quantidade</th>
+                            <th>Valor Unitário</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody id="detalhes-venda"></tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3"><strong>Total da Venda:</strong></td>
+                            <td id="total-venda">R$ 0.00</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"><strong>Comissão:</strong></td>
+                            <td id="comissao-venda">R$ 0.00</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <section class="produto-mais-vendido">
+            <h2>Produto Mais Vendido</h2>
+            <p><strong>Por Mês Selecionado:</strong> <span id="produto-mais-vendido-mes">-</span></p>
+            <p><strong>No Geral:</strong> <span id="produto-mais-vendido-geral">-</span></p>
+        </section>
+    </main>
+    <script>
+        const vendas = [
+            {
+                id: 1,
+                data: '2024-12-03 14:30',
+                produtos: [
+                    { nome: 'Produto A', quantidade: 2, valor: 50 },
+                    { nome: 'Produto B', quantidade: 1, valor: 100 }
+                ],
+                status: 'Aprovada'
+            },
+            {
+                id: 2,
+                data: '2024-12-02 10:15',
+                produtos: [
+                    { nome: 'Produto C', quantidade: 3, valor: 60 },
+                ],
+                status: 'Pendente'
+            },
+            {
+                id: 3,
+                data: '2024-11-15 16:45',
+                produtos: [
+                    { nome: 'Produto A', quantidade: 4, valor: 50 },
+                    { nome: 'Produto D', quantidade: 2, valor: 150 }
+                ],
+                status: 'Aprovada'
+            }
+        ];
+
+        const vendasMes = document.getElementById('vendas-mes');
+        const totalMes = document.getElementById('total-mes');
+        const totalComissao = document.getElementById('total-comissao');
+        const produtoMaisVendidoMes = document.getElementById('produto-mais-vendido-mes');
+        const produtoMaisVendidoGeral = document.getElementById('produto-mais-vendido-geral');
+        const modal = document.getElementById('modal-detalhes');
+        const detalhesVenda = document.getElementById('detalhes-venda');
+        const totalVenda = document.getElementById('total-venda');
+        const comissaoVenda = document.getElementById('comissao-venda');
+        const closeModal = document.querySelector('.close-btn');
+
+        function calcularProdutoMaisVendido(vendas) {
+            const produtoQuantidade = vendas.reduce((acc, venda) => {
+                venda.produtos.forEach(produto => {
+                    acc[produto.nome] = (acc[produto.nome] || 0) + produto.quantidade;
+                });
+                return acc;
+            }, {});
+
+            return Object.entries(produtoQuantidade).reduce((a, b) => (b[1] > a[1] ? b : a), ['', 0]);
+        }
+
+        function atualizarVendasPorMes(mes) {
+            vendasMes.innerHTML = '';
+            const vendasDoMes = vendas.filter(v => v.data.startsWith(mes));
+
+            let total = 0;
+            let totalComissaoValor = 0;
+
+            vendasDoMes.forEach(venda => {
+                const totalVenda = venda.produtos.reduce((sum, p) => sum + p.quantidade * p.valor, 0);
+                const comissao = totalVenda * 0.1;
+                total += totalVenda;
+                totalComissaoValor += comissao;
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${venda.id}</td>
+                    <td>${new Date(venda.data).toLocaleString('pt-BR')}</td>
+                    <td>R$ ${totalVenda.toFixed(2)}</td>
+                    <td>R$ ${comissao.toFixed(2)}</td>
+                    <td><button class="detalhes-btn" data-id="${venda.id}">Ver Detalhes</button></td>
+                `;
+                vendasMes.appendChild(row);
+            });
+
+            totalMes.textContent = `R$ ${total.toFixed(2)}`;
+            totalComissao.textContent = `R$ ${totalComissaoValor.toFixed(2)}`;
+
+            const maisVendido = calcularProdutoMaisVendido(vendasDoMes);
+            produtoMaisVendidoMes.textContent = maisVendido[0] || 'Nenhum produto vendido';
+        }
+
+        function atualizarProdutoMaisVendidoGeral() {
+            const maisVendidoGeral = calcularProdutoMaisVendido(vendas);
+            produtoMaisVendidoGeral.textContent = maisVendidoGeral[0] || 'Nenhum produto vendido';
+        }
+
+        function exibirDetalhesVenda(id) {
+            const venda = vendas.find(v => v.id === parseInt(id));
+            if (!venda) return;
+
+            detalhesVenda.innerHTML = '';
+            const total = venda.produtos.reduce((sum, p) => {
+                const subtotal = p.quantidade * p.valor;
+                detalhesVenda.innerHTML += `
+                    <tr>
+                        <td>${p.nome}</td>
+                        <td>${p.quantidade}</td>
+                        <td>R$ ${p.valor.toFixed(2)}</td>
+                        <td>R$ ${subtotal.toFixed(2)}</td>
+                    </tr>
+                `;
+                return sum + subtotal;
+            }, 0);
+
+            totalVenda.textContent = `R$ ${total.toFixed(2)}`;
+            comissaoVenda.textContent = `R$ ${(total * 0.1).toFixed(2)}`;
+            modal.classList.remove('hidden');
+        }
+
+        document.getElementById('mes').addEventListener('change', event => {
+            atualizarVendasPorMes(event.target.value);
+        });
+
+        vendasMes.addEventListener('click', event => {
+            if (event.target.classList.contains('detalhes-btn')) {
+                exibirDetalhesVenda(event.target.dataset.id);
+            }
+        });
+
+        closeModal.addEventListener('click', () => {
+            modal.classList.add('hidden');
+        });
+
+        // Inicializa com o mês de dezembro
+        atualizarVendasPorMes('2024-12');
+        atualizarProdutoMaisVendidoGeral();
+    </script>
+</body>
+</html>

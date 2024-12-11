@@ -5,31 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastrar Venda</title>
     <link rel="stylesheet" href="styles.css">
-    <style>
-        .status {
-            padding: 5px;
-            color: white;
-            font-weight: bold;
-            text-align: center;
-            border-radius: 5px;
-        }
-
-        .status.aprovada {
-            background-color: green;
-        }
-
-        .status.pendente {
-            background-color: yellow;
-            color: black;
-        }
-
-        /* Adicionando estilo para o gráfico */
-        #grafico {
-            width: 100%;
-            height: 400px;
-        }
-    </style>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <header class="header">
@@ -37,216 +12,129 @@
             <h1>Cadastrar Venda</h1>
             <nav>
                 <ul class="nav-links">
-                    <li><a href="chefe.html">Chefe</a></li>
-                    <li><a href="vendedor.html">Vendedor</a></li>
-                    <li><a href="venda.html" class="active">Cadastrar Venda</a></li>
+                    <li><a href="vendedor.html" class="active">Painel do Representante</a></li>
+                    <li><a href="venda.html">Cadastrar Venda</a></li>
+                    <li><a href="historico-vendas.html">Histórico de Vendas</a></li>
+                    <li><a href="index.html" class="logout-btn">Sair</a></li>
                 </ul>
             </nav>
-            <button class="logout-btn">Sair</button>
         </div>
     </header>
-    <main class="container">
-        <section class="nova-venda">
-            <h2>Registrar Nova Venda</h2>
-            <form class="form-venda" id="form-nova-venda">
-                <label for="produto">Produto</label>
-                <select id="produto" name="produto" required>
-                    <option value="">Selecione um produto</option>
-                </select>
+    <div class="container">
+        <form id="form-nova-venda">
+            <div class="search-container">
+                <label for="search-produto">Produto</label>
+                <input type="text" id="search-produto" placeholder="Digite para pesquisar...">
+                <ul id="produto-lista"></ul>
+            </div>
 
-                <label for="quantidade">Quantidade</label>
-                <input type="number" id="quantidade" name="quantidade" placeholder="Digite a quantidade" required>
+            <label for="quantidade">Quantidade</label>
+            <input type="number" id="quantidade" name="quantidade" placeholder="Digite a quantidade" required>
 
-                <label for="preco">Preço Unitário</label>
-                <input type="number" id="preco" name="preco" step="0.01" placeholder="Digite o preço unitário" disabled required>
+            <label for="preco">Preço Unitário</label>
+            <input type="number" id="preco" name="preco" step="0.01" placeholder="Preço" disabled>
 
-                <button type="submit" class="action-btn">Registrar Venda</button>
-            </form>
-        </section>
+            <label for="data">Data</label>
+            <input type="date" id="data" name="data" disabled>
 
-        <!-- Histórico de Vendas -->
-        <section class="historico-vendas">
-            <h2>Histórico de Vendas</h2>
-            <label for="mes">Escolha o Mês</label>
-            <select id="mes" name="mes">
-                <option value="2024-12">Dezembro 2024</option>
-                <option value="2024-11">Novembro 2024</option>
-                <option value="2024-10">Outubro 2024</option>
-                <!-- Adicione outros meses conforme necessário -->
-            </select>
+            <button type="button" id="adicionar-produto">Adicionar Produto</button>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>Produto</th>
-                        <th>Quantidade</th>
-                        <th>Preço Unitário</th>
-                        <th>Total</th>
-                        <th>Comissão do Produto</th>
-                        <th>Total Comissão</th>
-                        <th>Data</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody id="historico-vendas">
-                </tbody>
-            </table>
-        </section>
+            <h3>Produtos Selecionados</h3>
+            <ul id="produtos-adicionados"></ul>
 
-        <!-- Gráfico de Desempenho -->
-        <section class="grafico">
-            <h2>Desempenho Mensal</h2>
-            <canvas id="grafico"></canvas>
-        </section>
-    </main>
+            <div>
+                <strong>Total da Venda:</strong> R$ <span id="total-venda">0.00</span>
+            </div>
+
+            <button type="button" id="registrar-venda">Registrar Venda</button>
+        </form>
+    </div>
 
     <script>
         const produtos = [
             { id: 1, nome: 'Produto A', preco: 50 },
             { id: 2, nome: 'Produto B', preco: 100 },
-            { id: 3, nome: 'Produto C', preco: 200 }
+            { id: 3, nome: 'Produto C', preco: 200 },
         ];
 
-        const historico = [
-            { produto: 'Produto A', quantidade: 2, preco: 50, total: 100, comissaoProduto: 10, totalComissao: 20, data: '2024-12-01', status: 'Aprovada' },
-            { produto: 'Produto B', quantidade: 1, preco: 100, total: 100, comissaoProduto: 10, totalComissao: 10, data: '2024-12-02', status: 'Aprovada' }
-        ];
+        const searchProduto = document.getElementById('search-produto');
+        const produtoLista = document.getElementById('produto-lista');
+        const precoInput = document.getElementById('preco');
+        const dataInput = document.getElementById('data');
+        const adicionarProdutoBtn = document.getElementById('adicionar-produto');
+        const produtosAdicionados = document.getElementById('produtos-adicionados');
+        const totalVenda = document.getElementById('total-venda');
+        const formVenda = document.getElementById('form-nova-venda');
+        const registrarVendaBtn = document.getElementById('registrar-venda');
 
-        // Função para formatar a data para o formato dd/mm/aaaa
-        function formatarData(dataISO) {
-            const data = new Date(dataISO);
-            const dia = String(data.getDate()).padStart(2, '0');
-            const mes = String(data.getMonth() + 1).padStart(2, '0');
-            const ano = data.getFullYear();
-            return `${dia}/${mes}/${ano}`;
-        }
+        let produtosSelecionados = [];
+        const hoje = new Date().toISOString().split('T')[0];
+        dataInput.value = hoje;
 
-        // Adicionar comissão ao histórico
-        function calcularComissao(venda) {
-            const comissaoPorProduto = (venda.total * 0.1).toFixed(2); // Exemplo de 10% de comissão
-            const totalComissao = (venda.quantidade * comissaoPorProduto).toFixed(2);
-            venda.comissaoProduto = comissaoPorProduto;
-            venda.totalComissao = totalComissao;
-        }
+        searchProduto.addEventListener('input', () => {
+            const query = searchProduto.value.toLowerCase();
+            produtoLista.innerHTML = '';
 
-        // Popular histórico de vendas
-        const tbodyHistorico = document.getElementById('historico-vendas');
-        historico.forEach(venda => {
-            calcularComissao(venda);
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${venda.produto}</td>
-                <td>${venda.quantidade}</td>
-                <td>R$ ${venda.preco.toFixed(2)}</td>
-                <td>R$ ${venda.total.toFixed(2)}</td>
-                <td>R$ ${venda.comissaoProduto}</td>
-                <td>R$ ${venda.totalComissao}</td>
-                <td>${formatarData(venda.data)}</td>
-                <td><span class="status ${venda.status === 'Aprovada' ? 'aprovada' : 'pendente'}">${venda.status}</span></td>
-            `;
-            tbodyHistorico.appendChild(row);
+            const produtosFiltrados = produtos.filter(produto => 
+                produto.nome.toLowerCase().includes(query)
+            );
+
+            produtosFiltrados.forEach(produto => {
+                const li = document.createElement('li');
+                li.textContent = produto.nome;
+                li.dataset.id = produto.id;
+                li.dataset.preco = produto.preco;
+                produtoLista.appendChild(li);
+            });
+
+            produtoLista.style.display = produtosFiltrados.length > 0 ? 'block' : 'none';
         });
 
-        // Popular select de produtos
-        const selectProduto = document.getElementById('produto');
-        produtos.forEach(produto => {
-            const option = document.createElement('option');
-            option.value = produto.id;
-            option.textContent = `${produto.nome} - R$ ${produto.preco.toFixed(2)}`;
-            selectProduto.appendChild(option);
-        });
-
-        // Preencher preço automaticamente ao selecionar produto
-        selectProduto.addEventListener('change', (event) => {
-            const produtoSelecionado = produtos.find(p => p.id == event.target.value);
-            const precoInput = document.getElementById('preco');
-            if (produtoSelecionado) {
-                precoInput.value = produtoSelecionado.preco.toFixed(2);
-            } else {
-                precoInput.value = '';
+        produtoLista.addEventListener('click', (event) => {
+            if (event.target.tagName === 'LI') {
+                searchProduto.value = event.target.textContent;
+                precoInput.value = event.target.dataset.preco;
+                produtoLista.style.display = 'none';
             }
         });
 
-        // Registrar nova venda
-        const formNovaVenda = document.getElementById('form-nova-venda');
-        formNovaVenda.addEventListener('submit', (event) => {
-            event.preventDefault();
-            const produtoId = document.getElementById('produto').value;
-            const quantidade = document.getElementById('quantidade').value;
-            const preco = document.getElementById('preco').value;
+        adicionarProdutoBtn.addEventListener('click', () => {
+            const nomeProduto = searchProduto.value;
+            const precoProduto = parseFloat(precoInput.value);
+            const quantidadeProduto = parseInt(document.getElementById('quantidade').value);
 
-            if (!produtoId || !quantidade || !preco) {
-                alert('Preencha todos os campos.');
+            if (!nomeProduto || !quantidadeProduto || isNaN(precoProduto)) {
+                alert('Por favor, preencha todos os campos corretamente.');
                 return;
             }
 
-            const produtoSelecionado = produtos.find(p => p.id == produtoId);
-            const total = (quantidade * preco).toFixed(2);
-            const data = new Date().toISOString().split('T')[0];
+            const produto = { nome: nomeProduto, preco: precoProduto, quantidade: quantidadeProduto, total: precoProduto * quantidadeProduto };
+            produtosSelecionados.push(produto);
 
-            const novaVenda = {
-                produto: produtoSelecionado.nome,
-                quantidade: quantidade,
-                preco: preco,
-                total: total,
-                comissaoProduto: (total * 0.1).toFixed(2),
-                totalComissao: (quantidade * (total * 0.1)).toFixed(2),
-                data: data,
-                status: 'Pendente'
-            };
+            const li = document.createElement('li');
+            li.textContent = `${produto.nome} - Quantidade: ${produto.quantidade} - Total: R$ ${produto.total.toFixed(2)}`;
+            produtosAdicionados.appendChild(li);
 
-            historico.push(novaVenda);
+            const total = produtosSelecionados.reduce((sum, p) => sum + p.total, 0);
+            totalVenda.textContent = total.toFixed(2);
 
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${produtoSelecionado.nome}</td>
-                <td>${quantidade}</td>
-                <td>R$ ${preco}</td>
-                <td>R$ ${total}</td>
-                <td>R$ ${novaVenda.comissaoProduto}</td>
-                <td>R$ ${novaVenda.totalComissao}</td>
-                <td>${formatarData(data)}</td>
-                <td><span class="status pendente">${novaVenda.status}</span></td>
-            `;
-            tbodyHistorico.appendChild(row);
-            formNovaVenda.reset();
-            alert('Venda registrada com sucesso!');
+            searchProduto.value = '';
+            precoInput.value = '';
+            document.getElementById('quantidade').value = '';
         });
 
-        // Gráfico de desempenho
-        const ctx = document.getElementById('grafico').getContext('2d');
-        const vendasMensais = [
-            { mes: '2024-12', totalComissao: 150 },
-            { mes: '2024-11', totalComissao: 120 },
-            { mes: '2024-10', totalComissao: 90 },
-        ];
-
-        const labels = vendasMensais.map(venda => venda.mes);
-        const data = {
-            labels: labels,
-            datasets: [{
-                label: 'Comissão Total',
-                data: vendasMensais.map(venda => venda.totalComissao),
-                borderColor: 'rgba(75, 192, 192, 1)',
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderWidth: 1
-            }]
-        };
-
-        const config = {
-            type: 'line',
-            data: data,
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
+        registrarVendaBtn.addEventListener('click', () => {
+            if (produtosSelecionados.length === 0) {
+                alert('Por favor, adicione pelo menos um produto à venda.');
+                return;
             }
-        };
 
-        const grafico = new Chart(ctx, config);
+            alert('Venda registrada com sucesso!');
+            formVenda.reset();
+            produtosSelecionados = [];
+            produtosAdicionados.innerHTML = '';
+            totalVenda.textContent = '0.00';
+        });
     </script>
 </body>
 </html>

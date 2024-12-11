@@ -13,24 +13,21 @@
             <h1>Painel do Representante</h1>
             <nav>
                 <ul class="nav-links">
-                    <li><a href="chefe.html">Empresa</a></li>
-                    <li><a href="vendedor.html" class="active">Representante</a></li>
+                    <li><a href="vendedor.html">Painel do Representante</a></li>
+                    <li><a href="historico-vendas.html">Histórico de vendas</a></li>
+                    <li><a href="index.html" class="logout-btn">Sair</a></li>
                 </ul>
             </nav>
-            <button class="logout-btn">Sair</button>
         </div>
     </header>
 
     <main class="container">
-        <!-- Botão de destaque para Cadastrar Venda -->
         <section class="cadastrar-venda">
             <a href="venda.html" class="action-btn destaque">+ Cadastrar Nova Venda</a>
         </section>
-
-        <!-- Informações do Vendedor -->
         <section class="vendedor-info">
             <div class="vendedor-photo">
-                <img src="https://via.placeholder.com/150" alt="Foto do Vendedor">
+                <img src="exemplo.png" alt="Foto do Vendedor">
             </div>
             <div class="vendedor-details">
                 <h2>João Silva</h2>
@@ -74,7 +71,7 @@
     </main>
 
     <script>
-        // Exemplo de dados para popular o gráfico
+        // Exemplo de dados para o gráfico
         const vendasMensais = [1500, 2000, 1800, 2200, 2500, 3000];
         const ctx = document.getElementById('vendasChart').getContext('2d');
         new Chart(ctx, {
@@ -101,7 +98,6 @@
     </script>
 
     <style>
-        /* Destacar o botão de cadastrar venda */
         .cadastrar-venda {
             text-align: center;
             margin-bottom: 1em;

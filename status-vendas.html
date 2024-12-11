@@ -77,13 +77,13 @@
             <h1>Status de Vendas</h1>
             <nav>
                 <ul class="nav-links">
-                    <li><a href="chefe.html" class="active">Empresa</a></li>
+                    <li><a href="chefe.html" class="active">Home</a></li>
                     <li><a href="representantes.html">Representantes</a></li>
                     <li><a href="status-vendas.html">Gerenciar Vendas</a></li>
                     <li><a href="crud-produtos.html">Gerenciar Produtos</a></li>
+                    <li><a href="index.html" class="logout-btn">Sair</a></li>
                 </ul>
             </nav>
-            <button> <a href="index.html" class="logout-btn">Sair</a> </button>
         </div>
     </header>
 
@@ -92,32 +92,36 @@
             <h2>Vendas Pendentes</h2>
         </section>
     </main>
-
     <script>
         const vendasPendentes = [
             {
+                idVenda: 1,
                 representante: 'João Silva',
-                produto: 'Produto A',
-                quantidade: 3,
-                total: 150,
+                produtos: [
+                    { nome: 'Produto A', quantidade: 3, total: 150 },
+                    { nome: 'Produto B', quantidade: 2, total: 200 }
+                ],
                 data: '2024-12-01',
                 comprovante: 'comprovante1.jpg',
                 status: 'Pendente',
             },
             {
+                idVenda: 2,
                 representante: 'Maria Oliveira',
-                produto: 'Produto B',
-                quantidade: 2,
-                total: 200,
+                produtos: [
+                    { nome: 'Produto C', quantidade: 1, total: 100 },
+                    { nome: 'Produto B', quantidade: 1, total: 100 }
+                ],
                 data: '2024-12-02',
                 comprovante: 'comprovante2.jpg',
                 status: 'Pendente',
             },
             {
+                idVenda: 3,
                 representante: 'João Silva',
-                produto: 'Produto C',
-                quantidade: 1,
-                total: 100,
+                produtos: [
+                    { nome: 'Produto A', quantidade: 1, total: 50 }
+                ],
                 data: '2024-12-03',
                 comprovante: 'comprovante3.jpg',
                 status: 'Pendente',
@@ -151,8 +155,7 @@
                 table.innerHTML = `
                     <thead>
                         <tr>
-                            <th>Produto</th>
-                            <th>Quantidade</th>
+                            <th>Venda</th>
                             <th>Total</th>
                             <th>Data</th>
                             <th>Comprovante</th>
@@ -161,21 +164,23 @@
                         </tr>
                     </thead>
                     <tbody>
-                        ${vendasAgrupadas[representante].map((venda, index) => `
-                            <tr>
-                                <td>${venda.produto}</td>
-                                <td>${venda.quantidade}</td>
-                                <td>R$ ${venda.total.toFixed(2)}</td>
-                                <td>${new Date(venda.data).toLocaleDateString('pt-BR')}</td>
-                                <td>
-                                    <img src="${venda.comprovante}" alt="Comprovante" class="comprovante" onclick="visualizarComprovante('${venda.comprovante}')">
-                                </td>
-                                <td><span class="status-pendente">${venda.status}</span></td>
-                                <td>
-                                    <button class="aprovar-btn" onclick="aprovarVenda('${representante}', ${index})">Aprovar</button>
-                                </td>
-                            </tr>
-                        `).join('')}
+                        ${vendasAgrupadas[representante].map((venda, index) => {
+                            const totalVenda = venda.produtos.reduce((sum, produto) => sum + produto.total, 0);
+                            return `
+                                <tr>
+                                    <td>Venda #${venda.idVenda}</td>
+                                    <td>R$ ${totalVenda.toFixed(2)}</td>
+                                    <td>${new Date(venda.data).toLocaleDateString('pt-BR')}</td>
+                                    <td>
+                                        <img src="${venda.comprovante}" alt="Comprovante" class="comprovante" onclick="visualizarComprovante('${venda.comprovante}')">
+                                    </td>
+                                    <td><span class="status-pendente">${venda.status}</span></td>
+                                    <td>
+                                        <button class="aprovar-btn" onclick="aprovarVenda('${representante}', ${index})">Aprovar</button>
+                                    </td>
+                                </tr>
+                            `;
+                        }).join('')}
                     </tbody>
                 `;
 

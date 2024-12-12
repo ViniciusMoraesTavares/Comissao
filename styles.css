@@ -7,7 +7,7 @@ body {
 }
 
 .header {
-    background-color: #007bff;
+    background-color: #285a37;
     color: white;
     padding: 1em 0;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -41,11 +41,11 @@ body {
 }
 
 .nav-links a:hover {
-    background-color: #0056b3;
+    background-color: #0a6801;
 }
 
 .nav-links .active {
-    background-color: #0056b3;
+    background-color: #0a6801;
 }
 
 .container {
@@ -125,7 +125,7 @@ table th, table td {
 }
 
 table th {
-    background-color: #007bff;
+    background-color: #285a37;
     color: white;
 }
 
@@ -135,7 +135,7 @@ table tr:nth-child(even) {
 
 .action-btn {
     display: inline-block;
-    background-color: #28a745;
+    background-color: #285a37;
     color: white;
     text-align: center;
     padding: 0.75em 1.5em;
@@ -148,7 +148,7 @@ table tr:nth-child(even) {
 }
 
 .action-btn:hover {
-    background-color: #218838;
+    background-color: #0a6801;
 }
 
 .logout-btn {
@@ -271,13 +271,13 @@ table tr:nth-child(even) {
 
 #form-nova-venda input:focus,
 #form-nova-venda button:focus {
-    border-color: #007bff;
+    border-color: #285a37;
     outline: none;
     box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
 }
 
 #form-nova-venda button {
-    background-color: #007bff;
+    background-color: #285a37;
     color: white;
     font-weight: bold;
     cursor: pointer;
@@ -285,5 +285,5 @@ table tr:nth-child(even) {
 }
 
 #form-nova-venda button:hover {
-    background-color: #0056b3;
+    background-color: #004715;
 }

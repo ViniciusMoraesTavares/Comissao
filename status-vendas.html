@@ -98,8 +98,8 @@
                 idVenda: 1,
                 representante: 'João Silva',
                 produtos: [
-                    { nome: 'Produto A', quantidade: 3, total: 150 },
-                    { nome: 'Produto B', quantidade: 2, total: 200 }
+                    { nome: 'Produto A', quantidade: 3, total: 150, comissao: 15, },
+                    { nome: 'Produto B', quantidade: 2, total: 200, comissao: 20, }
                 ],
                 data: '2024-12-01',
                 comprovante: 'comprovante1.jpg',
@@ -109,8 +109,8 @@
                 idVenda: 2,
                 representante: 'Maria Oliveira',
                 produtos: [
-                    { nome: 'Produto C', quantidade: 1, total: 100 },
-                    { nome: 'Produto B', quantidade: 1, total: 100 }
+                    { nome: 'Produto C', quantidade: 1, total: 100, comissao: 10, },
+                    { nome: 'Produto B', quantidade: 1, total: 100, comissao: 10, }
                 ],
                 data: '2024-12-02',
                 comprovante: 'comprovante2.jpg',
@@ -120,7 +120,7 @@
                 idVenda: 3,
                 representante: 'João Silva',
                 produtos: [
-                    { nome: 'Produto A', quantidade: 1, total: 50 }
+                    { nome: 'Produto A', quantidade: 1, total: 50, comissao: 5, }
                 ],
                 data: '2024-12-03',
                 comprovante: 'comprovante3.jpg',
@@ -157,6 +157,7 @@
                         <tr>
                             <th>Venda</th>
                             <th>Total</th>
+                            <th>Comissão</th>
                             <th>Data</th>
                             <th>Comprovante</th>
                             <th>Status</th>
@@ -166,10 +167,12 @@
                     <tbody>
                         ${vendasAgrupadas[representante].map((venda, index) => {
                             const totalVenda = venda.produtos.reduce((sum, produto) => sum + produto.total, 0);
+                            const totalComissao = venda.produtos.reduce((sum, produto)=> sum + produto.comissao,0);
                             return `
                                 <tr>
                                     <td>Venda #${venda.idVenda}</td>
                                     <td>R$ ${totalVenda.toFixed(2)}</td>
+                                    <td>R$ ${totalComissao.toFixed(2)}</td>
                                     <td>${new Date(venda.data).toLocaleDateString('pt-BR')}</td>
                                     <td>
                                         <img src="${venda.comprovante}" alt="Comprovante" class="comprovante" onclick="visualizarComprovante('${venda.comprovante}')">

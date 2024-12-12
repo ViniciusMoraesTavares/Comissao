@@ -5,6 +5,147 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerenciamento de Produtos</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background-color: #285a37;
+            color: #fff;
+            padding: 15px 0;
+        }
+
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .header h1 {
+            margin: 0;
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0;
+            display: flex;
+        }
+
+        .nav-links li {
+            margin-left: 15px;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .nav-links a.active {
+            text-decoration: underline;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th, table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #285a37;
+            color: #fff;
+        }
+
+        .action-btn, .edit-btn, .delete-btn {
+            padding: 8px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            color: #fff;
+        }
+
+        .edit-btn {
+            background-color: #ffc107;
+        }
+
+        .delete-btn {
+            background-color: #dc3545;
+        }
+
+        .action-btn {
+            background-color: #285a37;
+        }
+
+        .produto-form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 12px; /* Borda arredondada */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra leve */
+            width: 300px; /* Largura reduzida */
+            margin: 20px auto; /* Centraliza horizontalmente */
+            text-align: center; /* Centraliza o texto */
+        }
+
+        .produto-form h2 {
+            margin-bottom: 20px;
+            font-size: 20px; /* Tamanho menor do título */
+        }
+
+        .produto-form label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px; /* Tamanho reduzido */
+            font-weight: bold;
+        }
+
+        .produto-form input[type="text"],
+        .produto-form input[type="number"],
+        .produto-form input[type="file"] {
+            width: 90%; /* Reduz a largura */
+            padding: 8px; /* Menor padding */
+            margin-bottom: 15px; /* Espaçamento reduzido */
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px; /* Tamanho de fonte reduzido */
+        }
+
+        .produto-form button {
+            width: 90%; /* Reduz a largura */
+            padding: 10px; /* Menor padding */
+            background-color: #285a37;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px; /* Tamanho menor */
+            cursor: pointer;
+        }
+
+        .produto-form button:hover {
+            background-color: #004615;
+        }
+
+        .lista-produtos {
+            margin-top: 20px; /* Mantém a lista de produtos abaixo */
+        }
+    </style>
 </head>
 <body>
     <header class="header">
@@ -61,13 +202,13 @@
     <script>
         const produtosList = document.getElementById('produtos-list');
         const produtoForm = document.getElementById('produto-form');
-
-        // Produtos exexmplos
+    
+        // Produtos exemplos
         let produtos = [
             { id: 1, nome: "Produto A", preco: 100.0, comissao: 10, foto: "foto1.jpg" },
-            { id: 2, nome: "Produto B", preco: 50.0, comissao: 5, foto: "foto2.jpg" }
+            { id: 2, nome: "Produto B", preco: 50.0, comissao: 5, foto: "foto1.jpg" }
         ];
-
+    
         // Função para renderizar os produtos
         function renderProdutos() {
             produtosList.innerHTML = '';
@@ -86,189 +227,58 @@
                 produtosList.appendChild(row);
             });
         }
-
+    
         // Adicionar Produto
         produtoForm.addEventListener('submit', (event) => {
             event.preventDefault();
             const nome = document.getElementById('nome').value;
             const preco = parseFloat(document.getElementById('preco').value);
             const comissao = parseFloat(document.getElementById('comissao').value);
-            const foto = document.getElementById('foto').files[0].name;
-
+            const foto = document.getElementById('foto').files[0];
+    
+            // Simular upload e gerar uma URL temporária para a imagem
+            const fotoUrl = foto ? URL.createObjectURL(foto) : '';
+    
             const novoProduto = {
-                id: produtos.length + 1,
+                id: Date.now(), // Usar timestamp como ID único
                 nome,
                 preco,
                 comissao,
-                foto
+                foto: fotoUrl,
             };
-
+    
             produtos.push(novoProduto);
             renderProdutos();
             produtoForm.reset();
         });
-
+    
         // Editar Produto
         function editProduto(id) {
-            const produto = produtos.find(p => p.id === id);
-            if (!produto) return;
-
-            const novoNome = prompt("Editar Nome do Produto:", produto.nome);
-            const novoPreco = parseFloat(prompt("Editar Preço do Produto:", produto.preco));
-            const novaComissao = parseFloat(prompt("Editar Comissão (%):", produto.comissao));
-
-            if (novoNome && !isNaN(novoPreco) && !isNaN(novaComissao)) {
+            const produto = produtos.find((p) => p.id === id);
+            if (produto) {
+                // Abrir prompts para edição
+                const novoNome = prompt("Editar Nome:", produto.nome) || produto.nome;
+                const novoPreco = parseFloat(prompt("Editar Preço:", produto.preco)) || produto.preco;
+                const novaComissao = parseFloat(prompt("Editar Comissão (%):", produto.comissao)) || produto.comissao;
+    
                 produto.nome = novoNome;
                 produto.preco = novoPreco;
                 produto.comissao = novaComissao;
+    
                 renderProdutos();
             }
         }
-
+    
         // Excluir Produto
         function deleteProduto(id) {
-            if (confirm("Tem certeza que deseja excluir este produto?")) {
-                produtos = produtos.filter(p => p.id !== id);
-                renderProdutos();
-            }
+            produtos = produtos.filter((produto) => produto.id !== id);
+            renderProdutos();
         }
-
-        // Inicializar a lista de produtos
+    
+        // Inicializar com os produtos de exemplo
         renderProdutos();
     </script>
-
-    <!-- Estilo Adicional -->
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            margin: 0;
-            padding: 0;
-        }
-
-        .header {
-            background-color: #007bff;
-            color: #fff;
-            padding: 15px 0;
-        }
-
-        .header .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: auto;
-        }
-
-        .header h1 {
-            margin: 0;
-        }
-
-        .nav-links {
-            list-style: none;
-            padding: 0;
-            display: flex;
-        }
-
-        .nav-links li {
-            margin-left: 15px;
-        }
-
-        .nav-links a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .nav-links a.active {
-            text-decoration: underline;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 0 15px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-
-        table th, table td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-
-        table th {
-            background-color: #007bff;
-            color: #fff;
-        }
-
-        .action-btn, .edit-btn, .delete-btn {
-            padding: 8px 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            color: #fff;
-        }
-
-        .edit-btn {
-            background-color: #ffc107;
-        }
-
-        .delete-btn {
-            background-color: #dc3545;
-        }
-
-        .action-btn {
-            background-color: #007bff;
-        }
-
-        .produto-form {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-        }
-
-        .produto-form h2 {
-            margin-bottom: 20px;
-            font-size: 24px;
-        }
-
-        .produto-form label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-
-        .produto-form input[type="text"], 
-        .produto-form input[type="number"], 
-        .produto-form input[type="file"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-
-        .produto-form button {
-            width: 100%;
-            padding: 12px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-        }
-
-        .produto-form button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    
 </body>
 </html>
+

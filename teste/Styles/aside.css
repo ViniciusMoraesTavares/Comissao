@@ -1,0 +1,125 @@
+.navigation {
+    position: fixed;
+    width: 300px;
+    height: 100%;
+    background: var(--blue);
+    border-left: 10px solid var(--blue);
+    transition: 0.5s;
+    overflow: hidden;
+    background: linear-gradient(to right, #02d39f, #2dc9a2);
+  }
+  .navigation.active {
+    width: 60px;
+  }
+  
+  .navigation ul {
+    padding-top: 75px;
+    padding-left: 0px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+  
+  .cardapio{
+    width: 30px;
+    filter: invert();
+  }
+  
+  .navigation ul li {
+    position: relative;
+    width: 100%;
+    list-style: none;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+  }
+  
+  .navigation ul li:hover,
+  .navigation ul li.hovered {
+    background-color: var(--white);
+  }
+  
+  .navigation ul li a {
+    position: relative;
+    display: block;
+    width: 100%;
+    display: flex;
+    text-decoration: none;
+    color: white;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+  }
+  
+  .navigation ul li:hover a{
+    color: black;
+    background-color: #ffffff
+  }
+  
+  .ative {
+    color: black !important;
+    background-color: #ffffff !important;
+  }
+  
+  .navigation ul li a .icon {
+    position: relative;
+    display: block;
+    min-width: 60px;
+    height: 60px;
+    line-height: 75px;
+    text-align: center;
+  }
+  .navigation ul li a .icon ion-icon {
+    font-size: 1.75rem;
+  }
+  
+  .navigation ul li a .title {
+    position: relative;
+    display: block;
+    padding: 0 10px;
+    height: 60px;
+    line-height: 60px;
+    text-align: start;
+    white-space: nowrap;
+  }
+  
+  .navigation ul li:hover a::before,
+  .navigation ul li.hovered a::before {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: -50px;
+    width: 50px;
+    height: 50px;
+    background-color: transparent;
+    border-radius: 50%;
+    box-shadow: 35px 35px 0 10px var(--white);
+    pointer-events: none;
+  }
+  .navigation ul li:hover a::after,
+  .navigation ul li.hovered a::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: -50px;
+    width: 50px;
+    height: 50px;
+    background-color: transparent;
+    border-radius: 50%;
+    box-shadow: 35px -35px 0 10px var(--white);
+    pointer-events: none;
+  }
+  
+  .toggle {
+    color: white;
+    position: absolute;
+    top: 10px;
+    left: 5px;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5rem;
+    cursor: pointer;
+  }
+  

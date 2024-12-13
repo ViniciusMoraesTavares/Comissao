@@ -1,0 +1,319 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@font-face {
+    font-family: 'bebas-neue';
+    src: url(../Fonts/BebasNeue-Regular.ttf);
+  }
+
+* {
+    margin: 0px;
+    padding: 0;
+    font-family: Poppins;
+    box-sizing: border-box;
+}
+
+
+:root {
+    --primary-color: green;
+    --background-color: #f4f6f7;
+    --text-color: #2c3e50;
+    --hover-color: #ecf0f1;
+    --card-background: #ffffff;
+    --border-color: #e0e4e8;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+body {
+    background-color: var(--background-color);
+}
+
+main {
+    height: 100vh;
+    margin-left: 290px;
+    transition: margin-left 0.8s ease;
+    margin-right: 10px;
+    padding: 20px;
+}
+
+.ative {
+    margin-left: 65px;
+}
+
+main h1 {
+    color: var(--primary-color);
+    font-weight: 500;
+    margin-bottom: 20px;
+    padding: 5px;
+    background-color: var(--card-background);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px var(--shadow-color);
+    border: 1px solid var(--border-color);
+}
+
+.primeiralinha {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.primeiralinha > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    background-color: var(--card-background);
+    border-radius: 15px;
+    box-shadow: 0 4px 15px var(--shadow-color);
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.primeiralinha > div:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+#form-nova-venda {
+    display: flex;
+    flex-direction: column;
+}
+
+#form-nova-venda label {
+    margin-top: 15px;
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+#form-nova-venda input {
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+    background-color: var(--background-color);
+}
+
+#form-nova-venda input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+#form-nova-venda .search-container{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+}
+
+#search-results {
+    position: absolute;
+    top: 85%;
+    left: 0;
+    right: 0;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #e2e2e2;
+    background-color: white;
+    display: none; /* Inicialmente escondido */
+    z-index: 10;
+    padding-left: 2px;
+    border-radius: 11px;
+}
+
+
+
+#search-results li {
+    padding: 3px;
+    cursor: pointer;
+    list-style: none;
+    border-bottom: 1px solid #ccc;
+}
+
+#search-results li:hover {
+    background-color: #f0f0f0;
+}
+
+.form-footer{
+    padding-top: 10px !important;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid black;
+}
+
+#produtos-selecionados-container {
+    background-color: var(--card-background);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 15px var(--shadow-color);
+    border: 1px solid var(--border-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.produtos-selecionados-header{
+    width: 100%;
+    border-bottom: 1px solid black;
+}
+
+.produtos-selecionados-body {
+    position: relative; /* Para garantir que o pseudo-elemento será posicionado em relação a esta div */
+    min-height: 400px; /* Defina a altura da div */
+    padding: 20px; /* Ajuste o preenchimento conforme necessário */
+    overflow-y: auto;
+    max-height: 400px;
+}
+
+.produtos-selecionados-body ul {
+    width: 100%;
+    padding: 0;
+}
+
+
+.produtos-selecionados-body li {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    list-style: none;
+    color: var(--text-color);
+    font-weight: 600;
+    border-bottom: 2px solid rgb(0, 0, 0);
+}
+
+.produtos-selecionados-body::before {
+    content: ''; /* Necessário para criar o pseudo-elemento */
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url(../Sources/images-removebg-preview.png);
+    background-size: cover; /* A imagem cobre toda a área da div */
+    background-position: center; /* Centraliza a imagem */
+    background-size: 400px;
+    background-repeat: no-repeat;
+    opacity: 0.1; /* Ajusta a opacidade da imagem */
+    z-index: 1; /* Coloca o pseudo-elemento atrás do conteúdo */
+}
+
+
+.total-venda-container{
+    padding-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid black;
+}
+
+.total-venda-container strong{
+    padding: 0;
+    margin: 0;
+    padding-right: 10px !important;
+}
+
+.total-venda-container span{
+    font-family: bebas-neue;
+    font-size: 29px;
+    border-bottom: 2px solid green;
+}
+
+#produtos-selecionados-container h3{
+    font-family: bebas-neue;
+    font-weight: bolder;
+    font-size: 30px;
+}
+
+.form-tittle{
+    border-bottom: 1px solid black;
+}
+
+.form-tittle h3{
+    font-family: bebas-neue;
+    font-weight: bolder;
+    font-size: 30px;
+}
+
+#produtos-selecionados-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+#adicionar-produto, #registrar-venda {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
+}
+
+#adicionar-produto:hover, #registrar-venda:hover {
+    background-color: #0f6424;
+    transform: translateY(-2px);
+}
+
+.segunda-linha .card {
+    background-color: var(--card-background);
+    border-radius: 15px;
+    box-shadow: 0 4px 15px var(--shadow-color);
+    border: 1px solid var(--border-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.segunda-linha .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.segunda-linha .card-header {
+    background-color: var(--card-background) !important;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.segunda-linha .table-hover tbody tr:hover {
+    background-color: var(--hover-color);
+}
+
+@media (max-width: 768px) {
+    aside{
+        z-index: 10000;
+    }
+    .primeiralinha {
+        flex-direction: column;
+    }
+    
+    .primeiralinha > div {
+        width: 100%;
+    }
+
+    main {
+        margin-left: 0;
+        padding: 10px;
+    }
+    .produtos-selecionados-body::before {
+        content: ''; /* Necessário para criar o pseudo-elemento */
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: url(../Sources/images-removebg-preview.png);
+        background-size: cover; /* A imagem cobre toda a área da div */
+        background-position: center; /* Centraliza a imagem */
+        background-size: 300px;
+        background-repeat: no-repeat;
+        opacity: 0.1; /* Ajusta a opacidade da imagem */
+        z-index: 1; /* Coloca o pseudo-elemento atrás do conteúdo */
+    }
+    .total-venda-container{
+        padding-top: 10px;
+        display: flex;
+        flex-direction: column;
+        border-top: 1px solid black;
+    }
+
+    .form-footer{
+        text-align: center;
+    }
+}

@@ -1,125 +1,144 @@
-.navigation {
+/* aside.css */
+:root {
+    --primary-color: #3498db;
+    --background-color: #f4f6f7;
+    --text-color: #2c3e50;
+    --hover-color: #ecf0f1;
+}
+
+aside {
     position: fixed;
-    width: 300px;
-    height: 100%;
-    background: var(--blue);
-    border-left: 10px solid var(--blue);
-    transition: 0.5s;
-    overflow: hidden;
-    background: linear-gradient(to right, #02d39f, #2dc9a2);
-  }
-  .navigation.active {
-    width: 60px;
-  }
-  
-  .navigation ul {
-    padding-top: 75px;
-    padding-left: 0px;
-    position: absolute;
-    top: 0;
     left: 0;
-    width: 100%;
-  }
-  
-  .cardapio{
-    width: 30px;
-    filter: invert();
-  }
-  
-  .navigation ul li {
-    position: relative;
-    width: 100%;
-    list-style: none;
-    border-top-left-radius: 30px;
-    border-bottom-left-radius: 30px;
-  }
-  
-  .navigation ul li:hover,
-  .navigation ul li.hovered {
-    background-color: var(--white);
-  }
-  
-  .navigation ul li a {
-    position: relative;
-    display: block;
-    width: 100%;
-    display: flex;
-    text-decoration: none;
-    color: white;
-    border-top-left-radius: 30px;
-    border-bottom-left-radius: 30px;
-  }
-  
-  .navigation ul li:hover a{
-    color: black;
-    background-color: #ffffff
-  }
-  
-  .ative {
-    color: black !important;
-    background-color: #ffffff !important;
-  }
-  
-  .navigation ul li a .icon {
-    position: relative;
-    display: block;
-    min-width: 60px;
-    height: 60px;
-    line-height: 75px;
-    text-align: center;
-  }
-  .navigation ul li a .icon ion-icon {
-    font-size: 1.75rem;
-  }
-  
-  .navigation ul li a .title {
-    position: relative;
-    display: block;
-    padding: 0 10px;
-    height: 60px;
-    line-height: 60px;
-    text-align: start;
+    top: 0;
+    bottom: 0;
+    width: 280px;
+    background-color: white;
+    height: 100vh;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-right: 1px solid #e0e4e8;
+    overflow: hidden;
+    transition: width 0.3s ease-in-out;
+    overflow: hidden;
     white-space: nowrap;
-  }
-  
-  .navigation ul li:hover a::before,
-  .navigation ul li.hovered a::before {
-    content: "";
-    position: absolute;
-    right: 0;
-    top: -50px;
-    width: 50px;
-    height: 50px;
-    background-color: transparent;
+    clip-path: inset(0 0 0 0); /* Padrão sem corte */
+    transition: clip-path 0.8s;
+}
+
+aside.active {
+    clip-path: inset(0 225px 0 0); /* Aplicando o corte */
+}
+
+.aside-usercontent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 0;
+    transition: max-height 0.5s ease, padding 0.5s ease;
+    max-height: 500px; /* Um valor máximo grande o suficiente para acomodar o conteúdo */
+    overflow: hidden; /* Esconde o conteúdo que ultrapassar */
+    border-radius: 20px;
+}
+
+aside.active .aside-usercontent {
+    max-height: 0px; /* Reduz para 0 para ocultar o conteúdo */
+    padding: 0; /* Remove o espaçamento para uma transição suave */
+}
+
+.aside-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 15px;
+    border-bottom: 1px solid #e0e4e8;
+}
+
+.aside-header p {
+    color: var(--text-color);
+    font-weight: 600;
+    font-size: 18px;
+    padding: 0;
+    margin: 0;
+}
+
+#hamburger {
+    color: var(--primary-color);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+#hamburger:hover {
+    transform: scale(1.1);
+}
+
+.user-photo {
+    background-color: #e0e4e8;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
-    box-shadow: 35px 35px 0 10px var(--white);
-    pointer-events: none;
-  }
-  .navigation ul li:hover a::after,
-  .navigation ul li.hovered a::after {
-    content: "";
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.user-photo img{
+    max-width: 140px;
+}
+
+.user-photo:hover {
+    transform: scale(1.05);
+}
+
+aside ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+aside li {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--text-color);
+    border-bottom: 1px solid #e0e4e8;
+}
+
+aside li:hover {
+    background-color: var(--hover-color);
+    transform: translateX(1px);
+}
+
+ion-icon {
+    margin-right: 15px;
+    color: green !important;
+    font-size: 26px;
+    transition: color 0.3s ease;
+}
+
+aside li:hover ion-icon {
+    color: #2980b9;
+}
+
+.aside-footer {
     position: absolute;
+    bottom: 10px;
+    left: 0px;
     right: 0;
-    bottom: -50px;
-    width: 50px;
-    height: 50px;
-    background-color: transparent;
-    border-radius: 50%;
-    box-shadow: 35px -35px 0 10px var(--white);
-    pointer-events: none;
-  }
-  
-  .toggle {
-    color: white;
-    position: absolute;
-    top: 10px;
-    left: 5px;
-    width: 60px;
-    height: 60px;
     display: flex;
     justify-content: center;
-    align-items: center;
-    font-size: 2.5rem;
-    cursor: pointer;
-  }
-  
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+.aside-footer:hover {
+    opacity: 1;
+}
+
+.aside-footer img {
+    max-width: 180px;
+}

@@ -1,0 +1,161 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@font-face {
+    font-family: 'bebas-neue';
+    src: url(../Fonts/BebasNeue-Regular.ttf);
+  }
+
+  :root {
+    --primary-color: green;
+    --background-color: #f4f6f7;
+    --text-color: #2c3e50;
+    --hover-color: #ecf0f1;
+    --card-background: #ffffff;
+    --border-color: #e0e4e8;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+body {
+    font-family: Poppins;
+    margin: 0;
+    line-height: 1.6;               /* Espaçamento entre linhas */
+    background-color: #ffffff;     /* Cor de fundo leve */
+    color: #333;                   /* Cor do texto */
+    display: flex;                  /* Flexbox para centralizar o conteúdo */
+    justify-content: center;        /* Alinha o conteúdo horizontalmente */
+    align-items: center;        /* Alinha o conteúdo no topo */
+    min-height: 100vh;              /* Garante que o body ocupe toda a altura da tela */
+}
+
+/* Configuração do main */
+main {
+    width: 100%;                    /* Largura 100% para ocupar toda a largura disponível */
+    max-width: 1200px;              /* Limita a largura máxima da área principal */
+    padding: 20px;                  /* Espaçamento interno */
+}
+
+.container{
+    display: flex;
+    flex-direction: row;
+}
+
+.container > div{
+    height: 500px;
+    width: 50%;
+}
+
+.logo-ct{
+    border-right: 3px solid green;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container > div > img{
+    height: 500px;
+}
+
+.login-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-container form{
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    padding: 0px 100px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-tittle>p{
+    display: inline;
+    font-family: bebas-neue;
+    font-size: 40px;
+    font-weight: bold;
+    border-bottom: 3px solid green;
+    border-bottom-left-radius: 4px;
+    margin: 0;
+    padding: 0;
+}
+
+.login-container form label{
+    padding-left: 4px;
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+.login-container form input{
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+    background-color: var(--background-color);
+}
+
+.login-container form input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+.login-container form select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+.login-container form select{
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+    background-color: var(--background-color);
+}
+
+.login-container form button{
+    font-size: 16px;
+    font-family: Poppins;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
+}
+
+.login-container form button:hover{
+    background-color: #0f6424;
+    transform: translateY(-2px);
+}
+
+.form-body{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-body>div{
+    display: flex;
+    flex-direction: column;
+}
+
+.form-footer{
+    text-align: end;
+}
+
+.form-footer img{
+    width: 150px;  
+    opacity: 0.3;  
+}
